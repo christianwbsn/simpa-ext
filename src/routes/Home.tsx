@@ -90,14 +90,14 @@ export const Home = () => {
                 <p>
                     {url}
                 </p>
-                <button onClick={sendTestMessage}>SEND MESSAGE</button>
+                {/* <button onClick={sendTestMessage}>SEND MESSAGE</button>
                 <button onClick={sendRemoveMessage}>Remove logo</button>
                 <p>Response from content:</p>
                 <p>
                     {responseFromContent}
-                </p>
+                </p> */}
 
-                <p>Get value:</p>
+                <p>Paper details:</p>
                 <p>
                     {title}
                 </p>

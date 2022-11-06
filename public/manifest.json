@@ -1,6 +1,6 @@
 {
   "name": "Simpa",
-  "description" : "Find disimilarity similar paper",
+  "description" : "Find disimilarity from similar paper",
   "version": "1.0",
   "manifest_version": 2,
   "browser_action": {

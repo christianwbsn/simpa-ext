@@ -25,7 +25,15 @@ const messagesFromReactAppListener = (
         const logo = document.getElementById('hplogo');
         logo?.parentElement?.removeChild(logo)
     }
+
+    if (message.message == "get title") {
+        const title = document.querySelector(".paper-title h1")?.innerHTML.trim();
+        const paperLink = document.querySelector(".paper-abstract a")?.getAttribute("href");
+        response([title, paperLink])
+    }
+
 }
+
 
 const main = () => {
     console.log('[content.ts] Main')

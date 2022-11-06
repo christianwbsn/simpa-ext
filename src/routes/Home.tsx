@@ -8,6 +8,8 @@ export const Home = () => {
     const [url, setUrl] = useState<string>('');
     const [val, setVal] = useState(0);
     const [responseFromContent, setResponseFromContent] = useState<string>('');
+    const [title, setTitle] = useState<string>('');
+    const [paperId, setPaperId] = useState<string>('');
 
     let {push} = useHistory();
 
@@ -18,6 +20,7 @@ export const Home = () => {
         getCurrentTabUrl((url) => {
             setUrl(url || 'undefined');
         })
+        getPaperInfo()
         fetch('https://simpa.community.saturnenterprise.io/predict?BedroomAbvGr=8&YearBuilt=2000').then(
             resp => resp.json() // this returns a promise
           ).then(repos => {
@@ -59,6 +62,23 @@ export const Home = () => {
         });
     };
 
+    const getPaperInfo = () => {
+        const message: ChromeMessage = {
+            from: Sender.React,
+            message: "get title",
+        }
+
+        getCurrentTabUId((id) => {
+            id && chrome.tabs.sendMessage(
+                id,
+                message,
+                (response) => {
+                    setTitle(response[0]);
+                    setPaperId(response[1]);
+                });
+        });
+    };
+
 
     return (
         <div className="App">
@@ -75,6 +95,14 @@ export const Home = () => {
                 <p>Response from content:</p>
                 <p>
                     {responseFromContent}
+                </p>
+
+                <p>Get value:</p>
+                <p>
+                    {title}
+                </p>
+                <p>
+                    {paperId}
                 </p>
                 <button onClick={() => {
                     push('/about')

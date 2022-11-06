@@ -6,6 +6,7 @@ import { getCurrentTabUId, getCurrentTabUrl } from "../chrome/utils";
 
 export const Home = () => {
     const [url, setUrl] = useState<string>('');
+    const [val, setVal] = useState(0);
     const [responseFromContent, setResponseFromContent] = useState<string>('');
 
     let {push} = useHistory();
@@ -17,6 +18,13 @@ export const Home = () => {
         getCurrentTabUrl((url) => {
             setUrl(url || 'undefined');
         })
+        fetch('https://simpa.community.saturnenterprise.io/predict?BedroomAbvGr=8&YearBuilt=2000').then(
+            resp => resp.json() // this returns a promise
+          ).then(repos => {
+             setVal(repos.prediction)
+          }).catch(ex => {
+            console.error(ex);
+          })
     }, []);
 
     const sendTestMessage = () => {
@@ -57,6 +65,7 @@ export const Home = () => {
             <header className="App-header">
             <img src={logo} className="App-logo" alt="logo"/>
                 <p>Home</p>
+                <p>{val}</p>
                 <p>URL:</p>
                 <p>
                     {url}

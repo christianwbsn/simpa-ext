@@ -57,18 +57,18 @@ export const Home = () => {
         const intersection = splitted_categories1.filter(value => splitted_categories2.includes(value));
         var similarity = []
         if (intersection.length > 0) {
-            similarity.push("[WHAT] These two papers belong to the same categories: " + intersection.toString())
+            similarity.push("[WHAT] These two papers belong to the same category: " + intersection.toString())
         }
 
         if (paper1.year == paper2.year) {
-            similarity.push("[WHEN] These two papers published in the same years: " + paper1.year)
+            similarity.push("[WHEN] These two papers were published in the same year: " + paper1.year)
         }
 
         var splitted_authors1 = paper1.authors.split(",")
         var splitted_authors2 = paper2.authors.split(",")
         const intersectionAuthors = splitted_authors1.filter(value => splitted_authors2.includes(value));
         if (intersectionAuthors.length > 0) {
-            similarity.push("[WHO] These two papers has similar authors: <b>" + intersectionAuthors.toString() + "</b>")
+            similarity.push("[WHO] These two papers have similar authors: <b>" + intersectionAuthors.toString() + "</b>")
         }
 
         return similarity

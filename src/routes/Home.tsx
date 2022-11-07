@@ -56,6 +56,7 @@ export const Home = () => {
         var splitted_categories2 = paper2.categories.split("|")
         const intersection = splitted_categories1.filter(value => splitted_categories2.includes(value));
         var similarity = []
+        similarity.push("[HOW] This paper is similar by: " + paper2.similarity_score.toString())
         if (intersection.length > 0) {
             similarity.push("[WHAT] These two papers belong to the same category: " + intersection.toString())
         }
@@ -83,10 +84,10 @@ export const Home = () => {
     const findDissimilarity = (paper1:Paper, paper2:Paper) => {
         var dissimilarity = []
         if (paper1.what.length > 0 && paper2.what.length > 0){
-            dissimilarity.push("[WHAT]" + paper2.what + "...")
+            dissimilarity.push("[WHAT] " + paper2.what + "...")
         }
         if (paper1.why.length > 0 && paper2.why.length > 0){
-            dissimilarity.push("[WHY]" + paper2.why +  "...")
+            dissimilarity.push("[WHY] " + paper2.why +  "...")
         }
 
         var year1 = parseInt(paper1.year)

@@ -8,6 +8,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 
 type Paper = {
@@ -54,11 +57,11 @@ export const Home = () => {
         const intersection = splitted_categories1.filter(value => splitted_categories2.includes(value));
         var similarity = []
         if (intersection.length > 0) {
-            similarity.push("[WHAT] These two papers belong to the same categories:" + intersection.toString())
+            similarity.push("[WHAT] These two papers belong to the same categories: " + intersection.toString())
         }
 
         if (paper1.year == paper2.year) {
-            similarity.push("[WHEN] These two papers published in the same years:" + paper1.year)
+            similarity.push("[WHEN] These two papers published in the same years: " + paper1.year)
         }
 
         var splitted_authors1 = paper1.authors.split(",")
@@ -154,15 +157,21 @@ export const Home = () => {
                  <List component="div" disablePadding>
                     { findSimilarity(papers[0], paper).map(similarity => {
                         return (
-                        <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemButton className="Sim-Text" sx={{ pl: 4, bgcolor:"green"}}>
+                        <ListItemIcon className="List-Icon">
+                            <DragHandleIcon />
+                        </ListItemIcon>
                             {similarity}
                         </ListItemButton>)
                     }) }
 
                     { findDissimilarity(papers[0], paper).map(similarity => {
                         return (
-                        <ListItemButton sx={{ pl: 4, bgcolor:"red" }}>
-                            {similarity}
+                        <ListItemButton className="Sim-Text" sx={{ pl: 4, bgcolor:"red" }}>
+                        <ListItemIcon className="List-Icon">
+                            <CallSplitIcon />
+                        </ListItemIcon>
+                        {similarity}
                         </ListItemButton>)
                     }) }
                 </List>

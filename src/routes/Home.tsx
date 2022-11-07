@@ -69,7 +69,7 @@ export const Home = () => {
         var splitted_authors2 = paper2.authors.split(",")
         const intersectionAuthors = splitted_authors1.filter(value => splitted_authors2.includes(value));
         if (intersectionAuthors.length > 0) {
-            similarity.push("[WHO] These two papers have similar authors: <b>" + intersectionAuthors.toString() + "</b>")
+            similarity.push("[WHO] These two papers have similar authors:" + intersectionAuthors.toString())
         }
 
         return similarity

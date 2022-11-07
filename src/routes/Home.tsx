@@ -74,6 +74,12 @@ export const Home = () => {
         return similarity
     }
 
+    const openNewTab = (paperId:string) => {
+        var id = paperId + "v1"
+        var newURL = "https://arxiv.org/abs/" + id;
+        chrome.tabs.create({ "url": newURL });
+    }
+
     const findDissimilarity = (paper1:Paper, paper2:Paper) => {
         var dissimilarity = []
         if (paper1.what.length > 0 && paper2.what.length > 0){
@@ -149,7 +155,7 @@ export const Home = () => {
                 if (index != 0) {
                 return (
                 <div>
-                <ListItemButton onClick={handleClick}>
+                <ListItemButton onClick={() => (openNewTab(paper.paper_id))}>
                 <div className="List-Text"> {paper.title} </div>
                 {open ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>

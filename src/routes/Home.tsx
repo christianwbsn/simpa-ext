@@ -26,10 +26,11 @@ type Paper = {
 
 export const Home = () => {
     const [url, setUrl] = useState<string>('');
+    const [currentPaper, setCurrentPaper] = useState<Paper>();
     const [papers, setPapers] = useState<Paper[]>([]);
     const [title, setTitle] = useState<string>('');
     const [paperId, setPaperId] = useState<string>('');
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
     let {push} = useHistory();
 
@@ -74,7 +75,8 @@ export const Home = () => {
                         resp => resp.json() // this returns a promise
                       ).then(repos => {
                          if (repos.papers.length > 0) {
-                            setPapers(repos.papers)
+                            setPapers(repos.papers.slice(1))
+                            setCurrentPaper(repos.papers[0])
                          }
                       }).catch(ex => {
                         console.error(ex);
@@ -99,10 +101,22 @@ export const Home = () => {
             >
             { papers?.map(paper => {
                 return (
+                <div>
                 <ListItemButton onClick={handleClick}>
                 <div className="List-Text"> {paper.title} </div>
                 {open ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                 <List component="div" disablePadding>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        {currentPaper?.what}
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        {paper.what}
+                    </ListItemButton>
+                </List>
+                </Collapse>
+                </div>
                 )
             })}
             {/* <ListItemButton onClick={handleClick}>

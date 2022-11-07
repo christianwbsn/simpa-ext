@@ -9,10 +9,24 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
 
+
+type Paper = {
+    categories: string;
+    paper_pk: string;
+    year: string;
+    paper_id: string;
+    authors: string;
+    title: string;
+    what: string;
+    why: string;
+    abstract: string;
+    similarity_score: number;
+}
+
+
 export const Home = () => {
     const [url, setUrl] = useState<string>('');
-    const [val, setVal] = useState(0);
-    const [responseFromContent, setResponseFromContent] = useState<string>('');
+    const [papers, setPapers] = useState<Paper[]>([]);
     const [title, setTitle] = useState<string>('');
     const [paperId, setPaperId] = useState<string>('');
     const [open, setOpen] = React.useState(false);
@@ -27,50 +41,11 @@ export const Home = () => {
             setUrl(url || 'undefined');
         })
         getPaperInfo()
-        fetch('https://simpa.community.saturnenterprise.io/predict?BedroomAbvGr=8&YearBuilt=2000').then(
-            resp => resp.json() // this returns a promise
-          ).then(repos => {
-             setVal(repos.prediction)
-          }).catch(ex => {
-            console.error(ex);
-          })
     }, []);
 
     const handleClick = () => {
         setOpen(!open);
       };
-
-    const sendTestMessage = () => {
-        const message: ChromeMessage = {
-            from: Sender.React,
-            message: "Hello from React",
-        }
-
-        getCurrentTabUId((id) => {
-            id && chrome.tabs.sendMessage(
-                id,
-                message,
-                (responseFromContentScript) => {
-                    setResponseFromContent(responseFromContentScript);
-                });
-        });
-    };
-
-    const sendRemoveMessage = () => {
-        const message: ChromeMessage = {
-            from: Sender.React,
-            message: "delete logo",
-        }
-
-        getCurrentTabUId((id) => {
-            id && chrome.tabs.sendMessage(
-                id,
-                message,
-                (response) => {
-                    setResponseFromContent(response);
-                });
-        });
-    };
 
     const getPaperInfo = () => {
         const message: ChromeMessage = {
@@ -85,8 +60,28 @@ export const Home = () => {
                 (response) => {
                     setTitle(response[0]);
                     setPaperId(response[1]);
+                    fetch('https://simpa.community.saturnenterprise.io/api/v1/paper/vectorsearch/id', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "paper_id": response[1],
+                            "number_of_results": 10,
+                            "search_type": "KNN"
+                        })
+                    }).then(
+                        resp => resp.json() // this returns a promise
+                      ).then(repos => {
+                         if (repos.papers.length > 0) {
+                            setPapers(repos.papers)
+                         }
+                      }).catch(ex => {
+                        console.error(ex);
+                      })
                 });
         });
+
     };
 
 
@@ -102,7 +97,15 @@ export const Home = () => {
                 sx={{ width: '100%', bgcolor: '#34697F'}}
                 component="nav"
             >
-            <ListItemButton onClick={handleClick}>
+            { papers?.map(paper => {
+                return (
+                <ListItemButton onClick={handleClick}>
+                <div className="List-Text"> {paper.title} </div>
+                {open ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                )
+            })}
+            {/* <ListItemButton onClick={handleClick}>
             <div className="List-Text"> {title} </div>
             {open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
@@ -112,7 +115,7 @@ export const Home = () => {
                         {paperId}
                     </ListItemButton>
                 </List>
-            </Collapse>
+            </Collapse> */}
             </List>
             </div>
             <footer className="App-footer">

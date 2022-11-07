@@ -48,6 +48,49 @@ export const Home = () => {
         setOpen(!open);
       };
 
+    const findSimilarity = (paper1:Paper, paper2:Paper) => {
+        var splitted_categories1 = paper1.categories.split("|")
+        var splitted_categories2 = paper2.categories.split("|")
+        const intersection = splitted_categories1.filter(value => splitted_categories2.includes(value));
+        var similarity = []
+        if (intersection.length > 0) {
+            similarity.push("[WHAT] These two papers belong to the same categories:" + intersection.toString())
+        }
+
+        if (paper1.year == paper2.year) {
+            similarity.push("[WHEN] These two papers published in the same years:" + paper1.year)
+        }
+
+        var splitted_authors1 = paper1.authors.split(",")
+        var splitted_authors2 = paper2.authors.split(",")
+        const intersectionAuthors = splitted_authors1.filter(value => splitted_authors2.includes(value));
+        if (intersectionAuthors.length > 0) {
+            similarity.push("[WHO] These two papers has similar authors: <b>" + intersectionAuthors.toString() + "</b>")
+        }
+
+        return similarity
+    }
+
+    const findDissimilarity = (paper1:Paper, paper2:Paper) => {
+        var dissimilarity = []
+        if (paper1.what.length > 0 && paper2.what.length > 0){
+            dissimilarity.push("[WHAT]" + paper2.what + "...")
+        }
+        if (paper1.why.length > 0 && paper2.why.length > 0){
+            dissimilarity.push("[WHY]" + paper2.why +  "...")
+        }
+
+        var year1 = parseInt(paper1.year)
+        var year2 = parseInt(paper2.year)
+        var diff = Math.abs(year1-year2)
+        if (year1 > year2) {
+            dissimilarity.push("[WHEN] Your paper is newer compared to this recommendation by " + diff + " years")
+        } else if (year1 < year2) {
+            dissimilarity.push("[WHEN] Your paper is older compared to this recommendation by " + diff + " years")
+        }
+        return dissimilarity
+    }
+
     const getPaperInfo = () => {
         const message: ChromeMessage = {
             from: Sender.React,
@@ -75,7 +118,7 @@ export const Home = () => {
                         resp => resp.json() // this returns a promise
                       ).then(repos => {
                          if (repos.papers.length > 0) {
-                            setPapers(repos.papers.slice(1))
+                            setPapers(repos.papers)
                             setCurrentPaper(repos.papers[0])
                          }
                       }).catch(ex => {
@@ -99,7 +142,8 @@ export const Home = () => {
                 sx={{ width: '100%', bgcolor: '#34697F'}}
                 component="nav"
             >
-            { papers?.map(paper => {
+            { papers?.map((paper, index) => {
+                if (index != 0) {
                 return (
                 <div>
                 <ListItemButton onClick={handleClick}>
@@ -108,17 +152,25 @@ export const Home = () => {
                 </ListItemButton>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                  <List component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4 }}>
-                        {currentPaper?.what}
-                    </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
-                        {paper.what}
-                    </ListItemButton>
+                    { findSimilarity(papers[0], paper).map(similarity => {
+                        return (
+                        <ListItemButton sx={{ pl: 4 }}>
+                            {similarity}
+                        </ListItemButton>)
+                    }) }
+
+                    { findDissimilarity(papers[0], paper).map(similarity => {
+                        return (
+                        <ListItemButton sx={{ pl: 4, bgcolor:"red" }}>
+                            {similarity}
+                        </ListItemButton>)
+                    }) }
                 </List>
                 </Collapse>
                 </div>
                 )
-            })}
+            }})}
+
             {/* <ListItemButton onClick={handleClick}>
             <div className="List-Text"> {title} </div>
             {open ? <ExpandLess /> : <ExpandMore />}

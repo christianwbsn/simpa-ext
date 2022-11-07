@@ -3,6 +3,11 @@ import { useHistory } from "react-router-dom";
 import logo from '../logo.png';
 import { ChromeMessage, Sender } from "../types";
 import { getCurrentTabUId, getCurrentTabUrl } from "../chrome/utils";
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
 
 export const Home = () => {
     const [url, setUrl] = useState<string>('');
@@ -10,6 +15,7 @@ export const Home = () => {
     const [responseFromContent, setResponseFromContent] = useState<string>('');
     const [title, setTitle] = useState<string>('');
     const [paperId, setPaperId] = useState<string>('');
+    const [open, setOpen] = React.useState(false);
 
     let {push} = useHistory();
 
@@ -29,6 +35,10 @@ export const Home = () => {
             console.error(ex);
           })
     }, []);
+
+    const handleClick = () => {
+        setOpen(!open);
+      };
 
     const sendTestMessage = () => {
         const message: ChromeMessage = {
@@ -84,31 +94,33 @@ export const Home = () => {
         <div className="App">
             <header className="App-header">
             <img src={logo} className="App-logo" alt="logo"/>
-                <p>Home</p>
-                <p>{val}</p>
-                <p>URL:</p>
-                <p>
-                    {url}
-                </p>
-                {/* <button onClick={sendTestMessage}>SEND MESSAGE</button>
-                <button onClick={sendRemoveMessage}>Remove logo</button>
-                <p>Response from content:</p>
-                <p>
-                    {responseFromContent}
-                </p> */}
-
-                <p>Paper details:</p>
-                <p>
-                    {title}
-                </p>
-                <p>
-                    {paperId}
-                </p>
-                <button onClick={() => {
-                    push('/about')
-                }}>About page
-                </button>
             </header>
+            <div className="App-body">
+            {url}
+            <List
+                sx={{ width: '100%', bgcolor: '#34697F'}}
+                component="nav"
+            >
+            <ListItemButton onClick={handleClick}>
+            <div className="List-Text"> {title} </div>
+            {open ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+                 <List component="div" disablePadding>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        {paperId}
+                    </ListItemButton>
+                </List>
+            </Collapse>
+            </List>
+            </div>
+            <footer className="App-footer">
+                Simpa v1.0.0
+            </footer>
+            {/* <p>{url}</p>
+                <p>Paper details:</p>
+                <p>{title}</p>
+                <p>{paperId}</p> */}
         </div>
     )
 }

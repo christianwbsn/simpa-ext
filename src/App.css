@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  font-family: 'Roboto';
 }
 
 .App-logo {
@@ -10,7 +10,6 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,6 +17,32 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.App-footer {
+  text-align: center;
+  color: white;
+}
+
+.App-body {
+  text-align: left;
+  margin-right: 10px;
+  padding-right: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(8px + 2vmin);
+  color: white;
+}
+
+.List-Text {
+  margin:0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
+  display: block;
+}
+
 
 .App-link {
   color: #61dafb;

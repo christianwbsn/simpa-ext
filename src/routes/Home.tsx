@@ -96,7 +96,8 @@ export const Home = () => {
             <img src={logo} className="App-logo" alt="logo"/>
             </header>
             <div className="App-body">
-            {url}
+            Found similar papers to: <br></br>
+            <b>{title}</b>
             <List
                 sx={{ width: '100%', bgcolor: '#34697F'}}
                 component="nav"

@@ -56,7 +56,8 @@ export const Home = () => {
         var splitted_categories2 = paper2.categories.split("|")
         const intersection = splitted_categories1.filter(value => splitted_categories2.includes(value));
         var similarity = []
-        similarity.push("[HOW] This paper is similar by: " + paper2.similarity_score.toString())
+        var score = Math.round(paper2.similarity_score * 100)
+        similarity.push("[HOW] This paper is similar by: " + score + "%")
         if (intersection.length > 0) {
             similarity.push("[WHAT] These two papers belong to the same category: " + intersection.toString())
         }

@@ -1,18 +1,18 @@
-## 1. How it was created:
+<p align="center"> <img src="src/logo.png" alt="simpa_logo" width="250"/> </p>
+<h2>Chrome extension code for Simpa </h2>
+<p align="center"> <img src="assets/readme/demo.gif" alt="simpa_demo"/> </p>
 
-[Medium. How To Create A Google Chrome Extension With React](https://medium.com/javascript-in-plain-english/how-to-create-google-chrome-extension-using-react-js-5c9e343323ff)
-
-## 2. How to build this extension:
+## 1. How to build this extension:
 
 ```
+$ yarn install
 $ yarn run build
 ```
 
-## 3. How to add it to your Chrome browser:
+## 2. How to add it to your Chrome browser:
 
 ![](./assets/readme/2020-12-04_15-18-20.jpg)
 
 Select `/build` folder
-
 
 
